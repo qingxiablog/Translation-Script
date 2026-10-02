@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         Shift Translator / Shift new
-// @name:zh-CN   Shift Translator / Shift翻译 （修复版）
+// @name         Shift Translator / Auto-recognition Version
+// @name:zh-CN   Shift Translator / 自动识别版
 // @namespace    https://example.com/
 // @version      1.4.2
 // @description  Hover element + modifier key to toggle translation. Select text + modifier key for tooltip translation.
