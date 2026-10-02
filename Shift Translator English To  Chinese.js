@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         Shift Translator / Shift new
-// @name:zh-CN   Shift Translator / Shift翻译 （修复版）
+// @name         Shift Translator / English → Chinese
+// @name:zh-CN   Shift Translator / 英语→中文
 // @namespace    https://example.com/
 // @version      1.3.8
 // @description  Hover element + modifier key to toggle translation. Select text + modifier key for tooltip translation.
@@ -262,7 +262,7 @@
       return false;
     }
 
-    if (el.closest(EXCLUDED_SELECTOR)) {
+    if (isExcludedElement(el)) {
       return false;
     }
 
@@ -278,8 +278,8 @@
     const text =
       textRoot.innerText?.trim() || '';
 
-    // ignore tiny texts
-    if (text.length < 12) {
+    // Headings are valid targets even when their title is short.
+    if (text.length < 12 && !el.matches('h1,h2,h3,h4,h5,h6')) {
       return false;
     }
 
@@ -317,6 +317,19 @@
     }
 
     return true;
+  }
+
+  function isExcludedElement(el) {
+    const excluded = el?.closest?.(EXCLUDED_SELECTOR);
+
+    if (!excluded) {
+      return false;
+    }
+
+    // Wikipedia/Grokipedia may place the article h1 inside a header.
+    const title = el.closest?.('h1');
+
+    return !title || Boolean(title.closest('nav,footer'));
   }
 
   function normalizeModifierKeys(input) {
@@ -726,9 +739,7 @@
               return NodeFilter.FILTER_REJECT;
             }
 
-            if (
-              parent.closest(EXCLUDED_SELECTOR)
-            ) {
+            if (isExcludedElement(parent)) {
               return NodeFilter.FILTER_REJECT;
             }
 
